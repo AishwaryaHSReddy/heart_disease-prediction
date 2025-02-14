@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
@@ -59,6 +59,27 @@ print(classification_report(y_test, y_pred_log))
 print("\n🌲 Random Forest Performance:")
 print("Accuracy:", accuracy_score(y_test, y_pred_rf))
 print(classification_report(y_test, y_pred_rf))
+
+# Hyperparameter Tuning for Random Forest
+param_grid = {
+    'n_estimators': [50, 100, 200],
+    'max_depth': [None, 10, 20],
+    'min_samples_split': [2, 5, 10]
+}
+
+print("\n🔎 Performing Hyperparameter Tuning...")
+grid_search = GridSearchCV(RandomForestClassifier(random_state=42), param_grid, cv=5, scoring='accuracy', n_jobs=1)
+grid_search.fit(X_train, y_train)
+
+# Best model after tuning
+best_rf = grid_search.best_estimator_
+y_pred_best_rf = best_rf.predict(X_test)
+
+# Evaluate the tuned model
+print("\n🔥 Tuned Random Forest Performance:")
+print("Best Parameters:", grid_search.best_params_)
+print("Accuracy:", accuracy_score(y_test, y_pred_best_rf))
+print(classification_report(y_test, y_pred_best_rf))
 
 # Confusion Matrix for Logistic Regression
 plt.figure(figsize=(6,4))
