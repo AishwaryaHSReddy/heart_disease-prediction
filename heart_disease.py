@@ -98,3 +98,17 @@ plt.ylabel("True Label")
 plt.show()
 
 print("\n✅ Model training and evaluation complete!")
+
+
+
+import pickle
+
+# Save the trained model
+with open("model.pkl", "wb") as model_file:
+    pickle.dump(best_rf, model_file)
+
+# Save the scaler
+with open("scaler.pkl", "wb") as scaler_file:
+    pickle.dump(scaler, scaler_file)
+
+print("\n✅ Model and Scaler saved successfully!")
